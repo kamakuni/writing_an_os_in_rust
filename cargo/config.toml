@@ -1,2 +1,3 @@
 [unstable]
+build-std-features = ["compiler_builtins-mem"]
 build-std = ["core", "compiler_builtins"]
