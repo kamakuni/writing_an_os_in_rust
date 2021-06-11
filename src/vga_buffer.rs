@@ -36,9 +36,12 @@ struct ScreenChar {
     color_code: ColorCode,
 }
 
+const BUFFER_HEIGHT: usize = 25;
+const BUFFER_WIDTH: usize = 80;
+
 #[repr(transparent)]
 struct Buffer {
-    chars: [[ScreenChar: BUFFER_WIDTH]; BUFFER_HEIGHT],
+    chars: [[ScreenChar; BUFFER_WIDTH]; BUFFER_HEIGHT],
 }
 
 pub struct Writer {
@@ -55,17 +58,17 @@ impl Writer {
                 if self.column_position >= BUFFER_WIDTH {
                     self.new_line()
                 }
+
+                let row = BUFFER_HEIGHT - 1;
+                let col = self.column_position;
+
+                let color_code = self.color_code;
+                self.buffer.chars[row][col] = ScreenChar {
+                    ascii_character: byte,
+                    color_code,
+                };
+                self.column_position += 1;
             }
-
-            let row = BUFFER_HEIGHT - 1;
-            let col = self.column_position;
-
-            let color_code = self.color_code;
-            self.buffer.chars[row][col] = ScreenChar {
-                ascii_character: byte,
-                color_code,
-            };
-            self.column_position += 1;
         }
     }
 
@@ -92,5 +95,5 @@ pub fn print_something() {
 
     writer.write_byte(b'H');
     writer.write_string("ello ");
-    writer.write_string("World!");
+    writer.write_string("Wörld!");
 }
