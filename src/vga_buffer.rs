@@ -1,4 +1,5 @@
 use volatile::Volatile;
+use lazy_static::lazy_static;
 use core::fmt;
 
 #[allow(dead_code)]
@@ -114,10 +115,12 @@ impl fmt::Write for Writer {
     }
 }
 
-pub static WRITER: Writer = Writer {
-    column_position: 0,
-    color_code: ColorCode::new(Color::Yellow, Color::Black),
-    buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
+lazy_static! {
+    pub static WRITER: Writer = Writer {
+        column_position: 0,
+        color_code: ColorCode::new(Color::Yellow, Color::Black),
+        buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
+    }
 }
 
 pub fn print_something() {
