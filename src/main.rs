@@ -30,3 +30,10 @@ fn test_runner(tests: &[&dyn Fn()]) {
         test();
     }
 }
+
+#[test_case]
+fn trival_assertion() {
+    pritn!("trival_assertion");
+    assert_eq!(1,1);
+    println!("[ok]");
+}
