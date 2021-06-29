@@ -35,3 +35,10 @@ fn trival_assertion() {
     assert_eq!(1,1);
     println!("[ok]");
 }
+
+#[derive(debug, Clone, Copy, PartialEq, Eq)]
+#[repr(u32)]
+pub enum QemuExitCode {
+    Success = 0x10,
+    Failed = 0x11,
+}
