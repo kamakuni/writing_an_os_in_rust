@@ -2,22 +2,25 @@
 #![no_main] // disable all Rust-level entry points
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test_runner)]
-#[reexport_test_harness_main = "test_main"]
+#![reexport_test_harness_main = "test_main"]
 
 use core::panic::PanicInfo;
 mod vga_buffer;
-
-/// This function is called on panic.
-#[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
-    println!("{}", _info);
-    loop {}
-}
 
 #[no_mangle] // don't mangle the name of this function
 pub extern "C" fn _start() -> ! {
     println!("Hello World!{}", "!");
 
+    #[cfg(test)]
+    test_main();
+
+    loop {}
+}
+
+/// This function is called on panic.
+#[panic_handler]
+fn panic(_info: &PanicInfo) -> ! {
+    println!("{}", _info);
     loop {}
 }
 
@@ -28,12 +31,12 @@ fn test_runner(tests: &[&dyn Fn()]) {
         test();
     }
     /// new
-    exit_code(QemuExitCode::Success);
+    exit_qemu(QemuExitCode::Success);
 }
 
 #[test_case]
 fn trival_assertion() {
-    pritn!("trival_assertion");
+    print!("trival_assertion");
     assert_eq!(1,1);
     println!("[ok]");
 }
