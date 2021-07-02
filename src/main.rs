@@ -38,7 +38,7 @@ fn trival_assertion() {
     println!("[ok]");
 }
 
-#[derive(debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
 pub enum QemuExitCode {
     Success = 0x10,
