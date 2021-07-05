@@ -19,15 +19,26 @@ pub extern "C" fn _start() -> ! {
 }
 
 /// This function is called on panic.
+#[cfg(not(test))] // new attribute
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
     println!("{}", _info);
     loop {}
 }
 
+// our panic handler in test mode
+#[cfg(not(test))]
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    serial_println!("[failed]\n");
+    serial_println!("Error: {}\n");
+    exit_qemu(QemuExitCode::Failed);
+    loop {}
+}
+
 #[cfg(test)]
 fn test_runner(tests: &[&dyn Fn()]) {
-    println!("Running {} tests", tests.len());
+    serial_println!("Running {} tests", tests.len());
     for test in tests {
         test();
     }
@@ -37,9 +48,9 @@ fn test_runner(tests: &[&dyn Fn()]) {
 
 #[test_case]
 fn trival_assertion() {
-    print!("trival_assertion");
+    serial_print!("trival_assertion");
     assert_eq!(1,1);
-    println!("[ok]");
+    serial_println!("[ok]");
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
