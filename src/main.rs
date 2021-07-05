@@ -68,3 +68,18 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
         port.write(exit_code as u32);
     }
 }
+
+pub trait Testable {
+    fn run($self) -> ();
+}
+
+impl<T> Testable for T
+Where
+    T: Fn(),
+{
+    fn run($self) {
+        serial_print!("{}...\n", core::any::type_name::<T>());
+        self();
+        serial_println!("[ok]");
+    }
+}
