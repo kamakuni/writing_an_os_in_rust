@@ -17,6 +17,7 @@ features = ['spin_no_std']
 
 [package.metadata.bootimage]
 test-args = [
-    "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04", "-serail", "stdio"
+    "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04", "-serail", "stdio", 
+    "-display", "none"
 ]
 test-success-exit-code = 33
