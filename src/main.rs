@@ -21,13 +21,13 @@ pub extern "C" fn _start() -> ! {
 /// This function is called on panic.
 #[cfg(not(test))] // new attribute
 #[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
-    println!("{}", _info);
+fn panic(info: &PanicInfo) -> ! {
+    println!("{}", info);
     loop {}
 }
 
 // our panic handler in test mode
-#[cfg(not(test))]
+#[cfg(test)]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     serial_println!("[failed]\n");
