@@ -47,7 +47,9 @@ fn test_runner(tests: &[&dyn Testable]) {
 
 #[test_case]
 fn trival_assertion() {
+    serial_println!("trivial assertion... ");
     assert_eq!(1,1);
+    serial_println!("[ok]");
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
