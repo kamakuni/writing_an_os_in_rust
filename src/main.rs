@@ -47,9 +47,7 @@ fn test_runner(tests: &[&dyn Testable]) {
 
 #[test_case]
 fn trival_assertion() {
-    serial_println!("trivial assertion... ");
     assert_eq!(1,1);
-    serial_println!("[ok]");
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -77,7 +75,7 @@ where
     T: Fn(),
 {
     fn run(&self) {
-        serial_print!("{}...\n", core::any::type_name::<T>());
+        serial_print!("{}...\t", core::any::type_name::<T>());
         self();
         serial_println!("[ok]");
     }
