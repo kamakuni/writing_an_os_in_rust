@@ -7,7 +7,7 @@
 use core::panic::PanicInfo;
 
 #[no_mangle]
-pun extern "C" fn _start -> ! {
+pub extern "C" fn _start -> ! {
     test_main();
 
     loop {}
