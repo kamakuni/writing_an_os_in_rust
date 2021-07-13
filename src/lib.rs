@@ -47,7 +47,7 @@ pub extern "C" fn _start() -> ! {
 
 #[cfg(test)]
 #[panic_handler]
-pub panic(info: &PanicInfo) -> ! {
+pub fn panic(info: &PanicInfo) -> ! {
     test_panic_handler(info)
 }
 
