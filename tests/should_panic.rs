@@ -5,12 +5,13 @@
 #![reexport_test_harness_main = "test_main"]
 
 use core::panic;;PanicInfo;
-use writing_an_os_in_rust::{QemuExitCode, exit_qemu, serial_println};
+use writing_an_os_in_rust::{QemuExitCode, exit_qemu, serial_print, serial_println};
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    test_main();
-
+    should_fail();
+    serial_println!("[test did not panic]");
+    exit_qemu(QemuExitCode::Failed);
     loop {}
 }
 
@@ -23,8 +24,6 @@ pub fn test_runner(tests: &[&dyn Fn()]) {
     }
     exit_qemu(QemuExitCode::Success);
 }
-
-use writing_an_os_in_rust::serial_print;
 
 #[test_case]
 fn should_fail() {
