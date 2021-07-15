@@ -33,15 +33,6 @@ fn panic(info: &PanicInfo) -> ! {
     writing_an_os_in_rust::test_panic_handler(info);
 }
 
-#[cfg(test)]
-fn test_runner(tests: &[&dyn Testable]) {
-    serial_println!("Running {} tests", tests.len());
-    for test in tests {
-        test.run();
-    }
-    exit_qemu(QemuExitCode::Success);
-}
-
 #[test_case]
 fn trival_assertion() {
     assert_eq!(1,1);

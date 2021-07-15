@@ -32,8 +32,8 @@ pub fn test_runner(tests: &[&dyn Testable]) {
 
 pub fn test_panic_handler(info: &PanicInfo) -> ! {
     serial_println!("[failed]\n");
-    serial_println!("Error: {}\n", info);
-    exit_qemu(QemuExitCode::Error);
+    serial_println!("Failed: {}\n", info);
+    exit_qemu(QemuExitCode::Failed);
     loop {}
 }
 
@@ -55,7 +55,7 @@ pub fn panic(info: &PanicInfo) -> ! {
 #[repr(u32)]
 pub enum QemuExitCode {
     Success = 0x10,
-    Error = 0x11,
+    Failed = 0x11,
 }
 
 pub fn exit_qemu(exit_code: QemuExitCode) {
