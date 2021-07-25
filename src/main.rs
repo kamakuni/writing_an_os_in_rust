@@ -12,6 +12,12 @@ mod serial;
 pub extern "C" fn _start() -> ! {
     println!("Hello World!{}", "!");
 
+    writing_an_os_in_rust::init();
+
+    unsafe {
+        *(0xdeadbeef as *mut u64) = 42;
+    };
+
     #[cfg(test)]
     test_main();
 
