@@ -32,3 +32,8 @@ lazy_static! {
 pub fn init() {
     GDT.load();
 }
+
+struct Selectors {
+    code_selector: SegmentSelector,
+    tss_selector: SegmentSelector,
+}
