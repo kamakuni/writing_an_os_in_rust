@@ -23,14 +23,21 @@ lazy_static! {
 lazy_static! {
     static ref GDT: GlobalDescriptorTable = {
         let mut gdt = GlobalDescriptorTable::new();
-        gdt.add_entry(Descriptor::kernel_code_segment());   
-        gdt.add_entry(Descriptor::tss_segment(&TSS));
-        gdt
+        let code_selector = gdt.add_entry(Descriptor::kernel_code_segment());   
+        let tss_selector = gdt.add_entry(Descriptor::tss_segment(&TSS));
+        (gdt, Selectors{ code_selector, tss_selector})
     };
 }
 
 pub fn init() {
-    GDT.load();
+    use x86_64::instrustions::segmentation::set_cs;
+    use x86_64::instrustions::tables::load_tss;
+
+    GDT.0.load();
+    usafe {
+        set_cs(GDT.1.code_selector);
+        load_tss(GDT.1.tss_selector);
+    }
 }
 
 struct Selectors {
