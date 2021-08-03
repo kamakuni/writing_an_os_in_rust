@@ -1,5 +1,5 @@
 use x86_64::VirtAddr;
-use x86_64::structures::gdt::{GlobalDescriptorTable, Descriptor};
+use x86_64::structures::gdt::{GlobalDescriptorTable, Descriptor, SegmentSelector};
 use x86_64::structures::tss::TaskStateSegment;
 use lazy_static::lazy_static;
 
@@ -12,7 +12,7 @@ lazy_static! {
             const STACK_SIZE: usize = 4096 * 5;
             static mut STACK: [u8; STACK_SIZE] = [0; STACK_SIZE];
 
-            let stack_start = VirtAddr::from_ptr(usafe { &STACK });
+            let stack_start = VirtAddr::from_ptr(unsafe { &STACK });
             let stack_end = stack_start + STACK_SIZE;
             stack_end
         };
@@ -30,11 +30,11 @@ lazy_static! {
 }
 
 pub fn init() {
-    use x86_64::instrustions::segmentation::set_cs;
-    use x86_64::instrustions::tables::load_tss;
+    use x86_64::instructions::segmentation::set_cs;
+    use x86_64::instructions::tables::load_tss;
 
     GDT.0.load();
-    usafe {
+    unsafe {
         set_cs(GDT.1.code_selector);
         load_tss(GDT.1.tss_selector);
     }
