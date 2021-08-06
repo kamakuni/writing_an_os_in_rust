@@ -25,3 +25,23 @@ fn stack_overflow() {
 fn panic(info: &PanicInfo) -> ! {
     writing_an_os_in_rust::test_panic_handler(info)
 }
+
+use lazy_static::lazy_static;
+use x86_64::structures::idt::InterruptDescriptorTable;
+
+lazy_static! {
+    static ref TEST_IDT: InterruptDescriptorTable = {
+        let mut idt = InterruptDescriptorTable::new();
+        unsafe {
+            idt.double_fault
+                .set_handler_fn(test_double_fault_handler)
+                .set_stack_index(writing_an_os_in_rust::gdt::DOUBLE_FAULT_IST_INDEX);
+        }
+
+        idt
+    };
+}
+
+pub fn init_test_idt() {
+    TEST_IDT.load();
+}
