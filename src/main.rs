@@ -14,8 +14,12 @@ pub extern "C" fn _start() -> ! {
 
     writing_an_os_in_rust::init();
 
-    let ptr = 0xdeadbeaf as *mut u32;
+    let ptr = 0x205369 as *mut u32;
+    unsafe { let x = *ptr; }
+    println!("read worked");
+
     unsafe { *ptr = 42; }
+    println!("write worked");
 
     fn stack_overflow() {
         stack_overflow(); // for each recursion, the return address is pushed
